@@ -1,5 +1,7 @@
-const app = require("express")();
+// const app = require("express")();
+const express = require('express')
 const cors = require('cors');
+const app = express();
 const server = require("http").createServer(app);
 const io = require("socket.io")(server, {
     cors:{
@@ -7,6 +9,13 @@ const io = require("socket.io")(server, {
     }
 })
 
+app.use(cors())
+app.use(express.json())
+
+const playersRoutes = require('./routes/players')
+
+app.use('/players', playersRoutes)
+app.get('/', (req,res) => res.send('welcome to lets get quizzical'))
 
 // we have to use cors to connect our server with the client side so that it knows where the client lives
 // integrate our http server with a new instance of socket.io
@@ -25,9 +34,4 @@ io.on('connection', socket => {
     });
 });
 
-const port = process.env.PORT || 5001;
-
-
-server.listen(port, () => {
-    console.log(`Open for play on port ${port}!`)
-});
+module.exports = server
