@@ -7,9 +7,10 @@ const io = require("socket.io")(server, {
     }
 })
 
+
 // we have to use cors to connect our server with the client side so that it knows where the client lives
 // integrate our http server with a new instance of socket.io
-
+app.get('/', (req,res) => res.send('welcome to lets get quizzical'))
 // socket connection will go here
 
 io.on('connection', socket => {
