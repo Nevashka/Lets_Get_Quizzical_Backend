@@ -15,7 +15,7 @@ class Player {
         const players = playersData.rows.map(d => new Player(d))
         res(players);
       } catch (err) {
-        rej (`Error retrieving habits: ${err}`)
+        rej (`Error retrieving player: ${err}`)
       }
     })
   }

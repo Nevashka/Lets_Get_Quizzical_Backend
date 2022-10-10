@@ -12,7 +12,7 @@
     "start": "node index.js",
     "test": "jest --setupFiles ./tests/integration/config.js --watchAll --detectOpenHandles --runInBand --verbose",
     "unitTests": "jest --testPathPattern=/unit/ --watchAll --verbose",
-    "coverage": "jest --testPathPattern=/unit/ --coverage"
+    "coverage": "jest --testPathPattern=/unit/ --passWithNoTests --coverage"
   },
   "jest": {
     "testEnvironment": "node",
@@ -24,12 +24,12 @@
   "author": "She Sells Seashells by the Sea Shaw",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.18.1",
     "cors": "^2.8.5",
     "coverage": "^0.4.1",
+    "express": "^4.18.1",
     "pg": "^8.8.0",
-    "sql-template-strings": "^2.2.2",
-    "socket.io": "^4.5.2"
+    "socket.io": "^4.5.2",
+    "sql-template-strings": "^2.2.2"
   },
   "devDependencies": {
     "jest": "^29.0.3",
