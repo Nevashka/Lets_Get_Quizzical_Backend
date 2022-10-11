@@ -1,18 +1,18 @@
 {
   "name": "lets_get_quizzical_backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "Project 3 - build multiplayer quizz game",
   "main": "index.js",
   "directories": {
     "test": "tests"
   },
   "scripts": {
-    "dev": "nodemon server.js",
+    "dev": "nodemon index.js",
     "seedDev": "node dbConfig/seedDev.js",
-    "start": "node server.js",
+    "start": "node index.js",
     "test": "jest --setupFiles ./tests/integration/config.js --watchAll --detectOpenHandles --runInBand --verbose",
     "unitTests": "jest --testPathPattern=/unit/ --watchAll --verbose",
-    "coverage": "jest --testPathPattern=/unit/ --coverage"
+    "coverage": "jest --testPathPattern=/unit/ --passWithNoTests --coverage"
   },
   "jest": {
     "testEnvironment": "node",
