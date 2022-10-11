@@ -3,7 +3,7 @@ const cors = require('cors');
 const server = require("http").createServer(app);
 const io = require("socket.io")(server, {
     cors:{
-        origin: "*"
+        origin: "*",
     }
 })
 
@@ -44,18 +44,7 @@ io.on('connection', socket => {
         
     })
 
-    socket.on('join room', data => {
-        if(io.sockets.adapter.rooms.get(data.room)){
 
-            socket.join(data.room)
-            console.log(`${socket.id} has just joined ${data.room}`)
-            console.log('number of players in room: ',io.sockets.adapter.rooms.get(data.room).size)
-            io.in(data.room).emit('room size', io.sockets.adapter.rooms.get(data.room).size)
-        }else{
-            socket.emit('join error', 'that room does not exist')
-        }
-        
-    })
     
     socket.on('player ready', data => {
         socket.to(data.room).emit('ready message', `user ${data.player} is ready`)
@@ -66,7 +55,22 @@ io.on('connection', socket => {
     
 });
 
+io.of("/Room").on("connection", (socket) => {
 
+    console.log("Welcome to the room")
+    socket.on('join room', data => {
+        if(io.sockets.adapter.rooms.get(data.room)){
+
+            socket.join(data.room)
+            console.log(`${socket.id} has just joined ${data.room}`)
+            console.log('number of players in room: ',io.sockets.adapter.rooms.get(data.room).size)
+            io.of("/Room").in(data.room).emit('room size', io.sockets.adapter.rooms.get(data.room).size)
+        }else{
+            socket.emit('join error', 'that room does not exist')
+        }
+        
+    })
+});
 
 const port = process.env.PORT || 5001;
 
@@ -74,3 +78,4 @@ const port = process.env.PORT || 5001;
 server.listen(port, () => {
     console.log(`Open for play on port ${port}!`)
 });
+
