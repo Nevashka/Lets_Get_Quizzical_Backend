@@ -24,6 +24,7 @@
   "author": "She Sells Seashells by the Sea Shaw",
   "license": "ISC",
   "dependencies": {
+    "@socket.io/admin-ui": "^0.5.1",
     "cors": "^2.8.5",
     "coverage": "^0.4.1",
     "express": "^4.18.1",
