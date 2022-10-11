@@ -32,6 +32,58 @@ io.on('connection', socket => {
     socket.on("disconnect", socket => { // runs when client disconnects
         console.log("K bye then");
     });
+
+    socket.on("ping", socket => {
+        console.log(socket)
+    })
+    
+    socket.on('create room', data => {
+        console.log(io.sockets.adapter.rooms.get(data.room))
+        if(!io.sockets.adapter.rooms.get(data.room)){
+            
+            socket.join(data.room)
+            console.log('you have created ' + data.room)
+            socket.emit('room size', io.sockets.adapter.rooms.get(data.room).size)
+
+        } else {
+            socket.emit('create error', 'that room is already taken')
+        }
+    
+        
+        
+    })
+
+    socket.on('join room', data => {
+        if(io.sockets.adapter.rooms.get(data.room)){
+
+            socket.join(data.room)
+            console.log(`${socket.id} has just joined ${data.room}`)
+            console.log('number of players in room: ',io.sockets.adapter.rooms.get(data.room).size)
+            io.in(data.room).emit('room size', io.sockets.adapter.rooms.get(data.room).size)
+        }else{
+            socket.emit('join error', 'that room does not exist')
+        }
+        
+    })
+    
+    socket.on('player ready', data => {
+        socket.to(data.room).emit('ready message', `user ${data.player} is ready`)
+    })
+
+    
+    
+    
+});
+
+
+
+
+const port = process.env.PORT || 5001;
+
+
+server.listen(port, () => {
+    console.log(`Open for play on port ${port}!`)
 });
 
 module.exports = server
+
