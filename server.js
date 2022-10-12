@@ -21,15 +21,7 @@ app.get('/', (req,res) => res.send('welcome to lets get quizzical'))
 // we have to use cors to connect our server with the client side so that it knows where the client lives
 // integrate our http server with a new instance of socket.io
 app.get('/', (req,res) => res.send('welcome to lets get quizzical'))
-// socket connection will go here
 
-// socket.broadcast => send message to other sockets that isn't me 
-// everysocket is a room with it's own id
-// can't join room from client, needs to tell the server
-// // socket.on('join-room', room => {
-//   socket.join(room)
-// })
-// call back is always the last thing you pass
 
 io.on('connection', socket => {
     console.log("'Ello, who's this we got here?") // runs when client first connects
@@ -44,3 +36,14 @@ io.on('connection', socket => {
 });
 
 module.exports = server
+
+
+// socket connection will go here
+
+// socket.broadcast => send message to other sockets that isn't me 
+// everysocket is a room with it's own id
+// can't join room from client, needs to tell the server
+// // socket.on('join-room', room => {
+//   socket.join(room)
+// })
+// call back is always the last thing you pass
