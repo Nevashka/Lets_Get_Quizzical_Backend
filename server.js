@@ -23,7 +23,7 @@ app.get('/', (req,res) => res.send('welcome to lets get quizzical'))
 // socket connection will go here
 
 io.on('connection', socket => {
-    console.log("'Ello, who's this we got here?") // runs when client first connects
+    console.log("'Ello, who's this we got here? " + socket.id) // runs when client first connects
     const participantCount = io.engine.clientsCount
     socket.emit('admin-message', 'Hi there, new friend!')
     socket.broadcast.emit('admin-message', 'A new friend has arrived!')
@@ -33,17 +33,16 @@ io.on('connection', socket => {
         console.log("K bye then");
     });
 
-    socket.on("ping", socket => {
-        console.log(socket)
-    })
+    
     
     socket.on('create room', data => {
         console.log(io.sockets.adapter.rooms.get(data.room))
         if(!io.sockets.adapter.rooms.get(data.room)){
             
             socket.join(data.room)
-            console.log('you have created ' + data.room)
-            socket.emit('room size', io.sockets.adapter.rooms.get(data.room).size)
+            console.log(`${socket.id} has created room: ` + data.room)
+            
+            
 
         } else {
             socket.emit('create error', 'that room is already taken')
@@ -53,7 +52,21 @@ io.on('connection', socket => {
         
     })
 
+    socket.on('join room', data => {
+                if(io.sockets.adapter.rooms.get(data.room)){
+        
+                    socket.join(data.room)
+                    console.log(`${socket.id} has just joined ${data.room}`)
+                    console.log('number of players in room: ',io.sockets.adapter.rooms.get(data.room).size)
+                    io.emit('room size', io.sockets.adapter.rooms.get(data.room).size -1)
+                    io.emit('add player', data.player)
 
+                    
+                }else{
+                    socket.emit('join error', 'that room does not exist')
+                }
+                
+            })
     
     socket.on('player ready', data => {
         socket.to(data.room).emit('ready message', `user ${data.player} is ready`)
@@ -64,30 +77,26 @@ io.on('connection', socket => {
     
 });
 
-io.of("/Room").on("connection", (socket) => {
+// io.of("/Room").on("connection", (socket) => {
 
-    console.log("Welcome to the room")
-    socket.on('join room', data => {
-        if(io.sockets.adapter.rooms.get(data.room)){
 
-            socket.join(data.room)
-            console.log(`${socket.id} has just joined ${data.room}`)
-            console.log('number of players in room: ',io.sockets.adapter.rooms.get(data.room).size)
-            io.of("/Room").in(data.room).emit('room size', io.sockets.adapter.rooms.get(data.room).size)
-        }else{
-            socket.emit('join error', 'that room does not exist')
-        }
+//     console.log(`Welcome to the room ${socket.id}`)
+//     console.log(`You are currently in rooms: ${socket.rooms}`)
+//     socket.on('join room', data => {
+//         if(io.sockets.adapter.rooms.get(data.room)){
+
+//             socket.join(data.room)
+//             console.log(`${socket.id} has just joined ${data.room}`)
+//             console.log('number of players in room: ',io.sockets.adapter.rooms.get(data.room).size)
+//             io.of("/Room").in(data.room).emit('room size', io.sockets.adapter.rooms.get(data.room).size)
+//         }else{
+//             socket.emit('join error', 'that room does not exist')
+//         }
         
-    })
-});
+//     })
+// });
 
 
-const port = process.env.PORT || 5001;
-
-
-server.listen(port, () => {
-    console.log(`Open for play on port ${port}!`)
-});
 
 
 module.exports = server
