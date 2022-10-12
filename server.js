@@ -22,6 +22,8 @@ app.get('/', (req,res) => res.send('welcome to lets get quizzical'))
 app.get('/', (req,res) => res.send('welcome to lets get quizzical'))
 // socket connection will go here
 
+
+
 io.on('connection', socket => {
     console.log("'Ello, who's this we got here? " + socket.id) // runs when client first connects
     const participantCount = io.engine.clientsCount
@@ -41,6 +43,7 @@ io.on('connection', socket => {
             
             socket.join(data.room)
             console.log(`${socket.id} has created room: ` + data.room)
+            socket.username = 'admin'
             
             
 
@@ -54,12 +57,23 @@ io.on('connection', socket => {
 
     socket.on('join room', data => {
                 if(io.sockets.adapter.rooms.get(data.room)){
-        
+
+                    
                     socket.join(data.room)
                     console.log(`${socket.id} has just joined ${data.room}`)
                     console.log('number of players in room: ',io.sockets.adapter.rooms.get(data.room).size)
-                    io.emit('room size', io.sockets.adapter.rooms.get(data.room).size -1)
-                    io.emit('add player', data.player)
+                    const roomsize = io.sockets.adapter.rooms.get(data.room).size -1;
+                    io.emit('room size', roomsize)
+                    socket.username = data.player
+                    const socketIds = io.sockets.adapter.rooms.get(data.room)
+                    let users = [];
+                    socketIds.forEach((socketid) => {
+                        console.log(`this is player ${socketid}: ${io.sockets.sockets.get(socketid).username}`)
+                        if(io.sockets.sockets.get(socketid).username !== 'admin'){
+                            users.push(io.sockets.sockets.get(socketid).username)
+                        }
+                    })
+                    io.emit('add player', users)
 
                     
                 }else{
