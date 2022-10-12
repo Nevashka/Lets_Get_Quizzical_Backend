@@ -44,8 +44,6 @@ io.on('connection', socket => {
             socket.join(data.room)
             console.log(`${socket.id} has created room: ` + data.room)
             socket.username = 'admin'
-            
-            
 
         } else {
             socket.emit('create error', 'that room is already taken')
@@ -58,24 +56,28 @@ io.on('connection', socket => {
     socket.on('join room', data => {
                 if(io.sockets.adapter.rooms.get(data.room)){
 
-                    
-                    socket.join(data.room)
-                    console.log(`${socket.id} has just joined ${data.room}`)
-                    console.log('number of players in room: ',io.sockets.adapter.rooms.get(data.room).size)
-                    const roomsize = io.sockets.adapter.rooms.get(data.room).size -1;
-                    io.emit('room size', roomsize)
-                    socket.username = data.player
-                    const socketIds = io.sockets.adapter.rooms.get(data.room)
-                    let users = [];
-                    socketIds.forEach((socketid) => {
-                        console.log(`this is player ${socketid}: ${io.sockets.sockets.get(socketid).username}`)
-                        if(io.sockets.sockets.get(socketid).username !== 'admin'){
-                            users.push(io.sockets.sockets.get(socketid).username)
-                        }
-                    })
-                    io.emit('add player', users)
+                    if(io.sockets.adapter.rooms.get(data.room).size -1 < 7){
 
-                    
+                        socket.join(data.room)
+                        console.log(`${socket.id} has just joined ${data.room}`)
+                        console.log('number of players in room: ',io.sockets.adapter.rooms.get(data.room).size)
+                        const roomsize = io.sockets.adapter.rooms.get(data.room).size -1;
+                        io.emit('room size', roomsize)
+                        socket.username = data.player
+                        const socketIds = io.sockets.adapter.rooms.get(data.room)
+                        let users = [];
+                        socketIds.forEach((socketid) => {
+                            console.log(`this is player ${socketid}: ${io.sockets.sockets.get(socketid).username}`)
+                            if(io.sockets.sockets.get(socketid).username !== 'admin'){
+                                users.push(io.sockets.sockets.get(socketid).username)
+                            }
+                        })
+                        io.emit('add player', users)
+                    } else {
+                        socket.emit('room full error', 'that room is full')
+                    }
+                        
+                        
                 }else{
                     socket.emit('join error', 'that room does not exist')
                 }
