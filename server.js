@@ -88,7 +88,17 @@ io.on('connection', socket => {
         socket.to(data.room).emit('ready message', `user ${data.player} is ready`)
     })
 
-    
+    socket.on('starting the game', (data) => {
+        console.log(`${socket.id} is trying to start the game`)
+        socket.to(data.room).emit('Begin', true )
+    })
+
+    socket.on('start', (data) => {
+        setTimeout(() => {
+
+            console.log('let the games begin')
+        }, 10000)
+    })
     
     
 });
