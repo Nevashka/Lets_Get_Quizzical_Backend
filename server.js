@@ -84,8 +84,8 @@ io.on('connection', socket => {
                 
             })
     
-    socket.on('player ready', data => {
-        socket.to(data.room).emit('ready message', `user ${data.player} is ready`)
+    socket.on('share questions', (data) => {
+        io.emit('send questions', data)
     })
 
     socket.on('starting the game', (data) => {
@@ -94,10 +94,47 @@ io.on('connection', socket => {
     })
 
     socket.on('start', (data) => {
+        console.log('starting the game')
         setTimeout(() => {
-
-            console.log('let the games begin')
+            io.emit('load question', 0)
+            
         }, 10000)
+        setTimeout(() => {
+            io.emit('load question', 1)
+            
+        }, 20000)
+        setTimeout(() => {
+            io.emit('load question', 2)
+            
+        }, 30000)
+        setTimeout(() => {
+            io.emit('load question', 3)
+            
+        }, 40000)
+        setTimeout(() => {
+            io.emit('load question', 4)
+            
+        }, 50000)
+        setTimeout(() => {
+            io.emit('load question', 5)
+            
+        }, 60000)
+        setTimeout(() => {
+            io.emit('load question', 6)
+            
+        }, 70000)
+        setTimeout(() => {
+            io.emit('load question', 7)
+            
+        }, 80000)
+        setTimeout(() => {
+            io.emit('load question', 8)
+            
+        }, 90000)
+        setTimeout(() => {
+            io.emit('load question', 9)
+            
+        }, 100000)
     })
     
     
