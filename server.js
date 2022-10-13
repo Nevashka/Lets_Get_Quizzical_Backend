@@ -105,52 +105,57 @@ io.on('connection', socket => {
             console.log('Q1')
             io.emit('load question', 0)
             
-        }, 10000)
+        }, 5000)
         setTimeout(() => {
             console.log('Q2')
              io.emit('load question', 1)
             
-        }, 40000)
+        }, 15000)
         setTimeout(() => {
             console.log('Q3')
              socket.to(data.room).emit('load question', 2)
             
-        }, 60000)
+        }, 30000)
         setTimeout(() => {
             console.log('Q4')
             io.emit('load question', 3)
             
-        }, 80000)
+        }, 45000)
         setTimeout(() => {
             console.log('Q5')
              io.emit('load question', 4)
             
-        }, 100000)
+        }, 60000)
         setTimeout(() => {
             console.log('Q6')
              io.emit('load question', 5)
             
-        }, 120000)
+        }, 75000)
         setTimeout(() => {
             console.log('Q7')
             io.emit('load question', 6)
             
-        }, 140000)
+        }, 90000)
         setTimeout(() => {
             console.log('Q8')
              io.emit('load question', 7)
             
-        }, 160000)
+        }, 105000)
         setTimeout(() => {
             console.log('Q9')
              io.emit('load question', 8)
             
-        }, 180000)
+        }, 120000)
         setTimeout(() => {
             console.log('Q10')
              io.emit('load question', 9)
             
-        }, 200000)
+        }, 135000)
+        setTimeout(() => {
+            console.log('Q10')
+             io.emit('load score', true)
+            
+        }, 140000)
     })
     
     
