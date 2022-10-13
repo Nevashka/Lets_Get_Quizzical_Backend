@@ -26,8 +26,8 @@ app.get('/', (req,res) => res.send('welcome to lets get quizzical'))
 
 io.on('connection', socket => {
     console.log("'Ello, who's this we got here? " + socket.id) 
-    console.log('where is this socket', socket.handshake.headers.referer)// runs when client first connects
     const participantCount = io.engine.clientsCount
+    console.log(participantCount)
     socket.emit('admin-message', 'Hi there, new friend!')
     socket.broadcast.emit('admin-message', 'A new friend has arrived!')
     io.emit('admin-message', `There is ${participantCount} x friend here now!`)
@@ -39,7 +39,6 @@ io.on('connection', socket => {
     
     
     socket.on('create room', data => {
-        console.log(io.sockets.adapter.rooms.get(data.room))
         if(!io.sockets.adapter.rooms.get(data.room)){
             
             socket.join(data.room)
@@ -87,13 +86,10 @@ io.on('connection', socket => {
     
     socket.on('share questions', (data) => {
         console.log('sending the questions')
-        io.emit('send questions', data)
+        io.emit('send questions', data.data)
     })
 
-    socket.on('starting the game', (data) => {
-        console.log(`${socket.id} is trying to start the game`)
-        socket.to(data.room).emit('Begin', true )
-    })
+    
 
     socket.on('hide players', (data) => {
         console.log('hiding players')
@@ -101,49 +97,60 @@ io.on('connection', socket => {
     })
 
     socket.on('start', (data) => {
-        console.log(socket.id)
+        console.log(`${socket.id} is trying to start the game`)
+        socket.to(data.room).emit('Begin', true )
         
         console.log('starting the game')
         setTimeout(() => {
+            console.log('Q1')
             io.emit('load question', 0)
             
         }, 10000)
         setTimeout(() => {
-            io.emit('load question', 1)
-            
-        }, 20000)
-        setTimeout(() => {
-            io.emit('load question', 2)
-            
-        }, 30000)
-        setTimeout(() => {
-            io.emit('load question', 3)
+            console.log('Q2')
+             io.emit('load question', 1)
             
         }, 40000)
         setTimeout(() => {
-            io.emit('load question', 4)
-            
-        }, 50000)
-        setTimeout(() => {
-            io.emit('load question', 5)
+            console.log('Q3')
+             socket.to(data.room).emit('load question', 2)
             
         }, 60000)
         setTimeout(() => {
-            io.emit('load question', 6)
-            
-        }, 70000)
-        setTimeout(() => {
-            io.emit('load question', 7)
+            console.log('Q4')
+            io.emit('load question', 3)
             
         }, 80000)
         setTimeout(() => {
-            io.emit('load question', 8)
-            
-        }, 90000)
-        setTimeout(() => {
-            io.emit('load question', 9)
+            console.log('Q5')
+             io.emit('load question', 4)
             
         }, 100000)
+        setTimeout(() => {
+            console.log('Q6')
+             io.emit('load question', 5)
+            
+        }, 120000)
+        setTimeout(() => {
+            console.log('Q7')
+            io.emit('load question', 6)
+            
+        }, 140000)
+        setTimeout(() => {
+            console.log('Q8')
+             io.emit('load question', 7)
+            
+        }, 160000)
+        setTimeout(() => {
+            console.log('Q9')
+             io.emit('load question', 8)
+            
+        }, 180000)
+        setTimeout(() => {
+            console.log('Q10')
+             io.emit('load question', 9)
+            
+        }, 200000)
     })
     
     
