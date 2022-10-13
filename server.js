@@ -25,7 +25,8 @@ app.get('/', (req,res) => res.send('welcome to lets get quizzical'))
 
 
 io.on('connection', socket => {
-    console.log("'Ello, who's this we got here? " + socket.id) // runs when client first connects
+    console.log("'Ello, who's this we got here? " + socket.id) 
+    console.log('where is this socket', socket.handshake.headers.referer)// runs when client first connects
     const participantCount = io.engine.clientsCount
     socket.emit('admin-message', 'Hi there, new friend!')
     socket.broadcast.emit('admin-message', 'A new friend has arrived!')
@@ -85,6 +86,7 @@ io.on('connection', socket => {
             })
     
     socket.on('share questions', (data) => {
+        console.log('sending the questions')
         io.emit('send questions', data)
     })
 
@@ -93,7 +95,14 @@ io.on('connection', socket => {
         socket.to(data.room).emit('Begin', true )
     })
 
+    socket.on('hide players', (data) => {
+        console.log('hiding players')
+        io.emit('hide for all', true)
+    })
+
     socket.on('start', (data) => {
+        console.log(socket.id)
+        
         console.log('starting the game')
         setTimeout(() => {
             io.emit('load question', 0)
