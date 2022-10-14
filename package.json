@@ -4,7 +4,7 @@
   "description": "Project 3 - build multiplayer quizz game",
   "main": "index.js",
   "engines": {
-   "node": "18.11.0"
+   "node": "12.11.1"
    },
   "directories": {
     "test": "tests"
